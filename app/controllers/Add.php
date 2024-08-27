@@ -13,11 +13,10 @@ class Add extends Controller {
 
     private function getErrorMessage(): ?string {
         $errors = [
-            'error' => Validator::VALIDATION_MESSAGE,
+            'invalidinput' => Validator::VALIDATION_MESSAGE,
             'invalidsku' => Validator::SKU_EXISTS,
             'emptyfields' => Validator::EMPTY_FIELD_MESSAGE,
             'errorselect' => Validator::PRODUCT_SELECT,
-            'invalidprice' => Validator::PRICE_VALIDATION_MESSAGE,
         ];
 
         foreach ($errors as $key => $value) {
@@ -38,11 +37,11 @@ class Add extends Controller {
             $this->redirect("/add-product?invalidsku");
         }
 
-        if (!$this->validateCommonFields($validator, $postData)) {
+        if (!$this->validateEmptyCommonFields($validator, $postData)) {
             $this->redirect("/add-product?emptyfields");
         }
-        if (!$validator->validatePrice($postData['price'])) {
-            $this->redirect("/add-product?invalidprice");
+        if (!$this->validateValidCommonFields($validator, $postData)) {
+            $this->redirect("/add-product?invalidinput");
         }
 
         $productType = $postData['productType'];
@@ -56,7 +55,7 @@ class Add extends Controller {
         $specificAttributes = array_intersect_key($postData, array_flip($productClass::getSpecificAttributes()));
 
         if (!$productClass::validate($validator, $specificAttributes)) {
-            $this->redirect("/add-product?error");
+            $this->redirect("/add-product?invalidinput");
         }
 
         $productInstance->setAttributes(array_merge($postData, $specificAttributes));
@@ -64,13 +63,18 @@ class Add extends Controller {
         if ($productInstance->save()) {
             $this->redirect("/home");
         } else {
-            $this->redirect("/add-product?error");
+            $this->redirect("/add-product?invalidinput");
         }
     }
 
-    private function validateCommonFields(Validator $validator, array $postData): bool {
+    private function validateEmptyCommonFields(Validator $validator, array $postData): bool {
         return $validator->validateNotEmpty($postData['sku']) &&
                $validator->validateNotEmpty($postData['name']) &&
                $validator->validateNotEmpty($postData['price']);
+    }
+    private function validateValidCommonFields(Validator $validator, array $postData): bool {
+        return $validator->validateString($postData['sku']) &&
+               $validator->validateString($postData['name']) &&
+               $validator->validatePrice($postData['price']);
     }
 }
