@@ -17,4 +17,4 @@ Key Changes:
 
 
 - Refactored view templates into dynamic partials for the head and banner sections and refactored the product cards into one card that dynamically displays the attribute for 
-  each product, all while avoiding if-else or conditional statements as best i could.
+  each product, all while avoiding conditional statements as best i could.
