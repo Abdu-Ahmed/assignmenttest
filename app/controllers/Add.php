@@ -61,7 +61,7 @@ class Add extends Controller {
         $productInstance->setAttributes(array_merge($postData, $specificAttributes));
 
         if ($productInstance->save()) {
-            $this->redirect("/home");
+            $this->redirect("/");
         } else {
             $this->redirect("/add-product?invalidinput");
         }
