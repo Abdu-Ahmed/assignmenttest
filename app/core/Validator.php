@@ -6,7 +6,6 @@ class Validator {
     public const EMPTY_FIELD_MESSAGE = "Please, submit required data.";
     public const SKU_EXISTS = "SKU already exists!";
     public const PRODUCT_SELECT = "Please select a product!";
-    public const PRICE_VALIDATION_MESSAGE = "Please, enter a valid price.";
     
     public function validateString(string $value, int $minLength = 1, int $maxLength = PHP_INT_MAX): bool {
         $trimmedValue = trim($value);
