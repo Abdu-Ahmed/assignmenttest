@@ -12,7 +12,7 @@
         <div>
         <form id="product-form" action="/assignmenttest/public/save" method="POST" class="d-inline">
             <button type="submit" class="btn btn-primary me-2">Save</button>
-            <a href="/assignmenttest/public/home" class="btn btn-secondary">Cancel</a>
+            <a href="/assignmenttest/public/" class="btn btn-secondary">Cancel</a>
         </div>
     <?php endif; ?>
 </header>
